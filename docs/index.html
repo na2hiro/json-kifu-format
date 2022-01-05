@@ -1,0 +1,472 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>json-kifu-format</title>
+	<meta name="description" content="Documentation for json-kifu-format">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+	<script async src="assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">json-kifu-format</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<h1>json-kifu-format</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#json棋譜フォーマットjkf-" id="json棋譜フォーマットjkf-" style="color: inherit; text-decoration: none;">
+					<h1>JSON棋譜フォーマット(JKF) <a href="https://travis-ci.org/na2hiro/json-kifu-format"><img src="https://travis-ci.org/na2hiro/json-kifu-format.svg?branch=master" alt="Build Status"></a></h1>
+				</a>
+				<p>JSONで将棋の棋譜を取り扱う標準形式JKFを定義しています．またJKFを既存のKIF, KI2, CSA等から変換するライブラリ及びJKFを用いて盤面再生を行うライブラリを提供します．</p>
+				<a href="#概要" id="概要" style="color: inherit; text-decoration: none;">
+					<h2>概要</h2>
+				</a>
+				<ul>
+					<li>現状の問題として，既存のKIF, KI2, CSA形式が持つ情報はバラバラであり，アプリケーション側の対応に手間がかかる．</li>
+					<li>上記形式の情報に加え，棋譜再生や表示に必要な情報を持った形式をJSONで表し，これを流通用の <strong>JSON棋譜フォーマット(JKF)</strong> とする．<ul>
+							<li>JKFが一般的になれば，棋譜再生を行うアプリケーションの作成が容易になる．</li>
+							<li>一例として，JKFを元に棋譜再生を行うJKFPlayerクラス(JavaScript)を提供する．</li>
+						</ul>
+					</li>
+					<li>KIF, KI2, CSA各形式のパーサ(JavaScript)を用意し，JKFへ変換できるようにする．<ul>
+							<li>これはパーサジェネレータによるパーサである．つまり， <strong>KIF, KI2, CSA形式のEBNF表現</strong> を提供している．これは将棋界において画期的である．</li>
+						</ul>
+					</li>
+				</ul>
+				<a href="#棋譜形式の比較" id="棋譜形式の比較" style="color: inherit; text-decoration: none;">
+					<h3>棋譜形式の比較</h3>
+				</a>
+				<table>
+					<thead>
+						<tr>
+							<th>フォーマット</th>
+							<th>KIF</th>
+							<th>KI2</th>
+							<th>CSA</th>
+							<th>JKF</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td>0) 1) 元座標(from)</td>
+							<td>○</td>
+							<td>△(要相対逆算)</td>
+							<td>○</td>
+							<td>○</td>
+						</tr>
+						<tr>
+							<td>1) 取った駒(capture)</td>
+							<td>×</td>
+							<td>×</td>
+							<td>×</td>
+							<td>○</td>
+						</tr>
+						<tr>
+							<td>1) 2) 成り(promote)</td>
+							<td>○(不成なし)</td>
+							<td>○</td>
+							<td>△</td>
+							<td>○</td>
+						</tr>
+						<tr>
+							<td>2) 相対情報(relative)</td>
+							<td>△</td>
+							<td>○</td>
+							<td>△</td>
+							<td>○</td>
+						</tr>
+						<tr>
+							<td>2) 同〜(same)</td>
+							<td>○</td>
+							<td>○</td>
+							<td>×</td>
+							<td>○</td>
+						</tr>
+						<tr>
+							<td>手番(color)</td>
+							<td>×</td>
+							<td>○</td>
+							<td>○</td>
+							<td>○</td>
+						</tr>
+						<tr>
+							<td>消費時間(time)</td>
+							<td>○</td>
+							<td>×</td>
+							<td>○</td>
+							<td>○</td>
+						</tr>
+				</tbody></table>
+				<p>○=棋譜だけで可能 △=現在の局面を見れば可能 ×=不可能か，以前の局面を見れば可能</p>
+				<ul>
+					<li>0: 局面を1手進めるために必要な情報</li>
+					<li>1: 局面を1手戻すために必要な情報</li>
+					<li>2: 可読棋譜にするために必要な情報</li>
+					<li>相対情報: 上下左右など，同じ座標に複数の駒が移動できる場合に駒を区別するための情報．</li>
+					<li>相対逆算: 局面と座標と相対情報から，その位置に移動する駒を特定すること．</li>
+				</ul>
+				<a href="#形式の定義" id="形式の定義" style="color: inherit; text-decoration: none;">
+					<h2>形式の定義</h2>
+				</a>
+				<p>以下で定義される形式をVersion 1.0とします．1.x台では後方互換性を保つ変更のみを採用します．</p>
+				<a href="#jsonの形式-version-10" id="jsonの形式-version-10" style="color: inherit; text-decoration: none;">
+					<h3>JSONの形式 (Version 1.0)</h3>
+				</a>
+				<p><code>Formats.ts</code>にある内容です．&quot;?&quot;はない場合があるという意味です．小文字で始まる<code>型名</code>は組み込み型です．</p>
+				<ul>
+					<li>JKFが持つフィールドの定義<ul>
+							<li>header <code>string=&gt;string</code> ヘッダ情報．キーはKI2，KIF等の日本語のものに準ずる．(例: &quot;場所&quot;, &quot;先手&quot;)</li>
+							<li>initial? 初期局面(なければ平手)<ul>
+									<li>preset <code>InitialPresetString</code> 手合名</li>
+									<li>data? 初期局面データ(手合名がOTHERの時に使用)<ul>
+											<li>color: <code>Color</code> 初手の手番</li>
+											<li>board: <code>以下[][]</code> board[x-1][y-1]に(x,y)の駒情報．駒がない場合は空オブジェクト<code>{}</code><ul>
+													<li>color?: <code>Color</code> 先手/後手</li>
+													<li>kind?: <code>string</code> 駒の種類</li>
+												</ul>
+											</li>
+											<li>hands: <code>(string=&gt;number)[]</code> 駒種がkey, 枚数がvalueの連想配列．0番目が先手，1番目が後手の持駒</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+							<li>moves <code>MoveFormat[]</code> n番目はn手目の棋譜(0番目は初期局面のコメント用)</li>
+						</ul>
+					</li>
+				</ul>
+				<p>上の定義で使うオブジェクトの補助定義は次の通り．</p>
+				<ul>
+					<li><code>MoveFormat</code> 指し手を表す<ul>
+							<li>comments? <code>string[]</code> コメント</li>
+							<li>move? 駒の動き<ul>
+									<li>color <code>Color</code> 先手/後手</li>
+									<li>from? <code>PlaceFormat</code> 移動元 打った場合はなし</li>
+									<li>to <code>PlaceFormat</code> 移動先</li>
+									<li>piece <code>string</code> 駒の種類(<code>FU</code> <code>KY</code>等のCSA形式)</li>
+									<li>same? <code>boolean</code> 直前と同じ場合</li>
+									<li>promote? <code>Bool</code> 成るかどうか true:成, false:不成, 無いかnull:どちらでもない</li>
+									<li>capture? <code>string</code> 取った駒の種類</li>
+									<li>relative? <code>RelativeString</code> 相対情報</li>
+								</ul>
+							</li>
+							<li>time? 消費時間<ul>
+									<li>now <code>TimeFormat</code> 1手</li>
+									<li>total <code>TimeFormat</code> 合計</li>
+								</ul>
+							</li>
+							<li>special? <code>string</code> 特殊棋譜(CSAのTORYO, CHUDAN等)</li>
+							<li>forks? <code>MoveFormat[][]</code> 任意の長さの分岐を任意個格納する．分岐の初手はこのforksを持つ棋譜の代替の手とする(次の手ではなく)</li>
+						</ul>
+					</li>
+					<li><code>TimeFormat</code> 時間を表す<ul>
+							<li>h? <code>Integer</code> 時</li>
+							<li>m <code>Integer</code> 分</li>
+							<li>s <code>Integer</code> 秒</li>
+						</ul>
+					</li>
+					<li><code>PlaceFormat</code> 座標を表す<ul>
+							<li>x <code>Integer</code> 1から9</li>
+							<li>y <code>Integer</code> 一から九</li>
+						</ul>
+					</li>
+				</ul>
+				<p>エイリアスは次の通り．</p>
+				<ul>
+					<li><code>Color = number</code> 陣営を表す． 先手: 0, 後手: 1</li>
+					<li><code>RelativeString = string</code> 以下の文字列を連結したもの<ul>
+							<li>左, 直, 右: それぞれL, C, R(Left, Center/Choku, Right)</li>
+							<li>上, 寄, 引: それぞれU, M, D(Up, Middle, Down)</li>
+							<li>打: H(Hit 何か違う気もする)</li>
+						</ul>
+					</li>
+					<li><code>InitialPresetString = string</code> 平手，香落ち等KIFでサポートされている手合情報<ul>
+							<li>HIRATE: 平手</li>
+							<li>KY: 香落ち</li>
+							<li>KY_R: 右香落ち</li>
+							<li>KA: 角落ち</li>
+							<li>HI: 飛車落ち</li>
+							<li>HIKY: 飛香落ち</li>
+							<li>2: 二枚落ち</li>
+							<li>3: 三枚落ち</li>
+							<li>4: 四枚落ち</li>
+							<li>5: 五枚落ち    </li>
+							<li>5_L: 左五枚落ち</li>
+							<li>6: 六枚落ち</li>
+							<li>8: 八枚落ち</li>
+							<li>10: 十枚落ち</li>
+							<li>OTHER: その他</li>
+						</ul>
+					</li>
+				</ul>
+				<a href="#文字コード" id="文字コード" style="color: inherit; text-decoration: none;">
+					<h3>文字コード</h3>
+				</a>
+				<p>JSONで一般的なUTF-8を使用するものとします．</p>
+				<a href="#jkfの例" id="jkfの例" style="color: inherit; text-decoration: none;">
+					<h2>JKFの例</h2>
+				</a>
+				<p><code>test/</code>以下にも例が載っています．</p>
+				<a href="#通常" id="通常" style="color: inherit; text-decoration: none;">
+					<h3>通常</h3>
+				</a>
+				<pre><code><span style="color: #000000">{</span>
+<span style="color: #000000">  </span><span style="color: #A31515">&quot;header&quot;</span><span style="color: #000000">: {</span>
+<span style="color: #000000">    </span><span style="color: #A31515">&quot;先手&quot;</span><span style="color: #001080">:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;na2hiro&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #A31515">&quot;後手&quot;</span><span style="color: #001080">:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;うひょ&quot;</span>
+<span style="color: #000000">  },</span>
+<span style="color: #000000">  </span><span style="color: #A31515">&quot;moves&quot;</span><span style="color: #000000">: [</span>
+<span style="color: #000000">    {},</span>
+<span style="color: #000000">    {</span><span style="color: #A31515">&quot;move&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;from&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">7</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">7</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;to&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">7</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">6</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;piece&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;FU&quot;</span><span style="color: #000000">}},</span>
+<span style="color: #000000">    {</span><span style="color: #A31515">&quot;move&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;from&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">3</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">3</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;to&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">3</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">4</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;piece&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;FU&quot;</span><span style="color: #000000">}},</span>
+<span style="color: #000000">    {</span><span style="color: #A31515">&quot;move&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;from&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">8</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">8</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;to&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">2</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">2</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;piece&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KA&quot;</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;capture&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KA&quot;</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;promote&quot;</span><span style="color: #001080">:</span><span style="color: #0000FF">false</span><span style="color: #000000">}},</span>
+<span style="color: #000000">    {</span><span style="color: #A31515">&quot;move&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;from&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">3</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;to&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">2</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">2</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;piece&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;GI&quot;</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;capture&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KA&quot;</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;same&quot;</span><span style="color: #001080">:</span><span style="color: #0000FF">true</span><span style="color: #000000">}},</span>
+<span style="color: #000000">    {</span><span style="color: #A31515">&quot;move&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;to&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">4</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">5</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;piece&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KA&quot;</span><span style="color: #000000">}},</span>
+
+<span style="color: #000000">    {</span><span style="color: #A31515">&quot;special&quot;</span><span style="color: #001080">:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;CHUDAN&quot;</span><span style="color: #000000">}</span>
+<span style="color: #000000">  ]</span>
+<span style="color: #000000">}</span>
+</code></pre>
+				<a href="#分岐" id="分岐" style="color: inherit; text-decoration: none;">
+					<h3>分岐</h3>
+				</a>
+				<pre><code><span style="color: #000000">{</span>
+<span style="color: #000000">  </span><span style="color: #A31515">&quot;header&quot;</span><span style="color: #000000">: {},</span>
+<span style="color: #000000">  </span><span style="color: #A31515">&quot;moves&quot;</span><span style="color: #000000">: [</span>
+<span style="color: #000000">    {</span><span style="color: #A31515">&quot;comments&quot;</span><span style="color: #001080">:</span><span style="color: #000000">[</span><span style="color: #A31515">&quot;分岐の例&quot;</span><span style="color: #000000">]},</span>
+<span style="color: #000000">    {</span><span style="color: #A31515">&quot;move&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;from&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">7</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">7</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;to&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">7</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">6</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;piece&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;FU&quot;</span><span style="color: #000000">}},</span>
+<span style="color: #000000">    {</span><span style="color: #A31515">&quot;move&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;from&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">3</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">3</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;to&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">3</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">4</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;piece&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;FU&quot;</span><span style="color: #000000">}, </span><span style="color: #A31515">&quot;comments&quot;</span><span style="color: #001080">:</span><span style="color: #000000">[</span><span style="color: #A31515">&quot;次の手で二種類が考えられる：７七桂か２二角成である．&quot;</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;２二角成を選ぶと筋違い角となる．&quot;</span><span style="color: #000000">]},</span>
+<span style="color: #000000">    {</span><span style="color: #A31515">&quot;move&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;from&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">8</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">9</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;to&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">7</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">7</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;piece&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KE&quot;</span><span style="color: #000000">}, </span><span style="color: #A31515">&quot;forks&quot;</span><span style="color: #001080">:</span><span style="color: #000000">[</span>
+<span style="color: #000000">      [</span>
+<span style="color: #000000">        {</span><span style="color: #A31515">&quot;move&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;from&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">8</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">8</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;to&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">2</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">2</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;piece&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KA&quot;</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;capture&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KA&quot;</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;promote&quot;</span><span style="color: #001080">:</span><span style="color: #0000FF">false</span><span style="color: #000000">}},</span>
+<span style="color: #000000">        {</span><span style="color: #A31515">&quot;move&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;from&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">3</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;to&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">2</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">2</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;piece&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;GI&quot;</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;capture&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KA&quot;</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;same&quot;</span><span style="color: #001080">:</span><span style="color: #0000FF">true</span><span style="color: #000000">}},</span>
+<span style="color: #000000">        {</span><span style="color: #A31515">&quot;move&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;to&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">4</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">5</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;piece&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KA&quot;</span><span style="color: #000000">}}</span>
+<span style="color: #000000">      ]</span>
+<span style="color: #000000">    ]},</span>
+<span style="color: #000000">    {</span><span style="color: #A31515">&quot;move&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;from&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">2</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">2</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;to&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">7</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">7</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;piece&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KA&quot;</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;capture&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KE&quot;</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;promote&quot;</span><span style="color: #001080">:</span><span style="color: #0000FF">true</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;same&quot;</span><span style="color: #001080">:</span><span style="color: #0000FF">true</span><span style="color: #000000">}},</span>
+<span style="color: #000000">    {</span><span style="color: #A31515">&quot;move&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;from&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">8</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">8</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;to&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">7</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">7</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;piece&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KA&quot;</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;capture&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;UM&quot;</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;same&quot;</span><span style="color: #001080">:</span><span style="color: #0000FF">true</span><span style="color: #000000">}},</span>
+<span style="color: #000000">    {</span><span style="color: #A31515">&quot;move&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;to&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">3</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">3</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;piece&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KE&quot;</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;relative&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;H&quot;</span><span style="color: #000000">}}</span>
+<span style="color: #000000">  ]</span>
+<span style="color: #000000">}</span>
+</code></pre>
+				<a href="#駒落ち" id="駒落ち" style="color: inherit; text-decoration: none;">
+					<h3>駒落ち</h3>
+				</a>
+				<pre><code><span style="color: #000000">{</span>
+<span style="color: #000000">  </span><span style="color: #A31515">&quot;header&quot;</span><span style="color: #000000">: {},</span>
+<span style="color: #000000">  </span><span style="color: #A31515">&quot;initial&quot;</span><span style="color: #000000">: {</span><span style="color: #A31515">&quot;preset&quot;</span><span style="color: #001080">:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;6&quot;</span><span style="color: #000000">},</span>
+<span style="color: #000000">  </span><span style="color: #A31515">&quot;moves&quot;</span><span style="color: #000000">: [</span>
+<span style="color: #000000">    {},</span>
+<span style="color: #000000">    {</span><span style="color: #A31515">&quot;move&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;from&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">5</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;to&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">4</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">2</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;piece&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;OU&quot;</span><span style="color: #000000">}},</span>
+<span style="color: #000000">    {</span><span style="color: #A31515">&quot;move&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;from&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">7</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">7</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;to&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">7</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">6</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;piece&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;FU&quot;</span><span style="color: #000000">}},</span>
+<span style="color: #000000">    {</span><span style="color: #A31515">&quot;move&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;from&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">6</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;to&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">7</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">2</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;piece&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KI&quot;</span><span style="color: #000000">}}</span>
+<span style="color: #000000">  ]</span>
+<span style="color: #000000">}</span>
+</code></pre>
+				<a href="#初形変則" id="初形変則" style="color: inherit; text-decoration: none;">
+					<h3>初形変則</h3>
+				</a>
+				<pre><code><span style="color: #000000">{</span>
+<span style="color: #000000">  </span><span style="color: #A31515">&quot;header&quot;</span><span style="color: #000000">: {},</span>
+<span style="color: #000000">  </span><span style="color: #A31515">&quot;initial&quot;</span><span style="color: #000000">: {</span>
+<span style="color: #000000">    </span><span style="color: #A31515">&quot;preset&quot;</span><span style="color: #001080">:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;OTHER&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #A31515">&quot;data&quot;</span><span style="color: #001080">:</span><span style="color: #000000"> {</span>
+<span style="color: #000000">      </span><span style="color: #A31515">&quot;board&quot;</span><span style="color: #001080">:</span><span style="color: #000000"> [</span>
+<span style="color: #000000">        [{</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KY&quot;</span><span style="color: #000000">}, {                      },{</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;FU&quot;</span><span style="color: #000000">}, {}, {}, {}, {</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;FU&quot;</span><span style="color: #000000">}, {                      }, {</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KY&quot;</span><span style="color: #000000">}],</span>
+<span style="color: #000000">        [{</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KE&quot;</span><span style="color: #000000">}, {</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KA&quot;</span><span style="color: #000000">},{</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;FU&quot;</span><span style="color: #000000">}, {}, {}, {}, {                      }, {</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;HI&quot;</span><span style="color: #000000">}, {</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KE&quot;</span><span style="color: #000000">}],</span>
+<span style="color: #000000">        [{</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;GI&quot;</span><span style="color: #000000">}, {                      },{</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;FU&quot;</span><span style="color: #000000">}, {}, {}, {}, {</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;FU&quot;</span><span style="color: #000000">}, {                      }, {</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;GI&quot;</span><span style="color: #000000">}],</span>
+<span style="color: #000000">        [{</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KI&quot;</span><span style="color: #000000">}, {                      },{</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;FU&quot;</span><span style="color: #000000">}, {}, {}, {}, {</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;FU&quot;</span><span style="color: #000000">}, {                      }, {</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KI&quot;</span><span style="color: #000000">}],</span>
+<span style="color: #000000">        [{</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;OU&quot;</span><span style="color: #000000">}, {                      },{</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;FU&quot;</span><span style="color: #000000">}, {}, {}, {}, {</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;FU&quot;</span><span style="color: #000000">}, {                      }, {</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;OU&quot;</span><span style="color: #000000">}],</span>
+<span style="color: #000000">        [{</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KI&quot;</span><span style="color: #000000">}, {                      },{</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;FU&quot;</span><span style="color: #000000">}, {}, {}, {}, {</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;FU&quot;</span><span style="color: #000000">}, {                      }, {</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KI&quot;</span><span style="color: #000000">}],</span>
+<span style="color: #000000">        [{</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;GI&quot;</span><span style="color: #000000">}, {                      },{</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;FU&quot;</span><span style="color: #000000">}, {}, {}, {}, {                      }, {                      }, {</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;GI&quot;</span><span style="color: #000000">}],</span>
+<span style="color: #000000">        [{</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KE&quot;</span><span style="color: #000000">}, {</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;HI&quot;</span><span style="color: #000000">},{</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;FU&quot;</span><span style="color: #000000">}, {}, {}, {}, {</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;FU&quot;</span><span style="color: #000000">}, {</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KA&quot;</span><span style="color: #000000">}, {</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KE&quot;</span><span style="color: #000000">}],</span>
+<span style="color: #000000">        [{</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KY&quot;</span><span style="color: #000000">}, {                      },{</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;FU&quot;</span><span style="color: #000000">}, {}, {}, {}, {</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;FU&quot;</span><span style="color: #000000">}, {                      }, {</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;kind&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;KY&quot;</span><span style="color: #000000">}]</span>
+<span style="color: #000000">      ],</span>
+<span style="color: #000000">      </span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #000000"> </span><span style="color: #098658">0</span><span style="color: #000000">,</span>
+<span style="color: #000000">      </span><span style="color: #A31515">&quot;hands&quot;</span><span style="color: #001080">:</span><span style="color: #000000">[</span>
+<span style="color: #000000">        {</span><span style="color: #A31515">&quot;FU&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;KY&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;KE&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;GI&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;KI&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;KA&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;HI&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">},</span>
+<span style="color: #000000">        {</span><span style="color: #A31515">&quot;FU&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;KY&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;KE&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;GI&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;KI&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;KA&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;HI&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">}</span>
+<span style="color: #000000">      ]</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">  },</span>
+<span style="color: #000000">  </span><span style="color: #A31515">&quot;moves&quot;</span><span style="color: #000000">: [</span>
+<span style="color: #000000">    {</span><span style="color: #A31515">&quot;comments&quot;</span><span style="color: #001080">:</span><span style="color: #000000"> [</span><span style="color: #A31515">&quot;飛車角先落ち．&quot;</span><span style="color: #000000">]},</span>
+<span style="color: #000000">    {</span><span style="color: #A31515">&quot;move&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;from&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">2</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">8</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;to&quot;</span><span style="color: #001080">:</span><span style="color: #000000">{</span><span style="color: #A31515">&quot;x&quot;</span><span style="color: #001080">:</span><span style="color: #098658">2</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;y&quot;</span><span style="color: #001080">:</span><span style="color: #098658">3</span><span style="color: #000000">},</span><span style="color: #A31515">&quot;color&quot;</span><span style="color: #001080">:</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;piece&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;HI&quot;</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;promote&quot;</span><span style="color: #001080">:</span><span style="color: #0000FF">true</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;capture&quot;</span><span style="color: #001080">:</span><span style="color: #A31515">&quot;FU&quot;</span><span style="color: #000000">}}</span>
+<span style="color: #000000">  ]</span>
+<span style="color: #000000">}</span>
+</code></pre>
+				<a href="#プログラム" id="プログラム" style="color: inherit; text-decoration: none;">
+					<h2>プログラム</h2>
+				</a>
+				<a href="#ブラウザ向け" id="ブラウザ向け" style="color: inherit; text-decoration: none;">
+					<h3>ブラウザ向け</h3>
+				</a>
+				<p><a href="https://github.com/na2hiro/json-kifu-format/releases">Releases</a> からどうぞ．<code>json-kifu-format-*.*.*.min.js</code>を読み込むと，<code>JSONKifuFormat</code> が使えるようになります．</p>
+				<a href="#nodejs用" id="nodejs用" style="color: inherit; text-decoration: none;">
+					<h3>node.js用</h3>
+				</a>
+				<pre><code><span style="color: #001080">npm</span><span style="color: #000000"> </span><span style="color: #001080">install</span><span style="color: #000000"> </span><span style="color: #001080">json</span><span style="color: #000000">-</span><span style="color: #001080">kifu</span><span style="color: #000000">-</span><span style="color: #001080">format</span>
+</code></pre>
+				<p>exportされているクラス群は次の通りです</p>
+				<ul>
+					<li><code>Parsers</code><ul>
+							<li><code>parseKIF</code>: KIFをJSON形式に一対一変換するパーサ</li>
+							<li><code>parseKI2</code>: KI2をJSON形式に一対一変換するパーサ</li>
+							<li><code>parseCSA</code>: CSA(V1, V2, V2.1, V2.2)をJSON形式に一対一変換するパーサ</li>
+						</ul>
+					</li>
+					<li><code>Normalizer</code>: {KIF/KI2/CSA}と同等の情報しか持たないJKFを完全なJKFに変換するプログラム</li>
+					<li><code>JKFPlayer</code>: JKFを扱う棋譜再生盤の例</li>
+				</ul>
+				<a href="#開発環境" id="開発環境" style="color: inherit; text-decoration: none;">
+					<h2>開発環境</h2>
+				</a>
+				<pre><code><span style="color: #001080">$</span><span style="color: #000000"> </span><span style="color: #001080">nvm</span><span style="color: #000000"> </span><span style="color: #001080">use</span><span style="color: #000000"> &amp;&amp; </span><span style="color: #001080">nvm</span><span style="color: #000000"> </span><span style="color: #001080">i</span><span style="color: #000000"> &amp;&amp; </span><span style="color: #001080">npm</span><span style="color: #000000"> </span><span style="color: #001080">i</span>
+</code></pre>
+				<p>上記コマンドを実行することで開発に必要なパッケージをインストールできます．</p>
+				<ul>
+					<li><a href="https://github.com/na2hiro/Shogi.js">na2hiro/Shogi.js</a>: 将棋の盤駒を扱うライブラリ</li>
+					<li><a href="http://pegjs.majda.cz/">PEG.js</a>: パーサジェネレータ</li>
+					<li>TypeScript 2.0</li>
+					<li>Webpack 3 (バンドルツール)</li>
+					<li>Browserify (JSバンドルツール)</li>
+					<li>Jest (テストフレームワーク，カバレッジ計測)</li>
+					<li>TSLint (Linter)</li>
+					<li>iconv, jschardet (文字コード関連)</li>
+				</ul>
+				<a href="#コマンド" id="コマンド" style="color: inherit; text-decoration: none;">
+					<h3>コマンド</h3>
+				</a>
+				<pre><code><span style="color: #001080">$</span><span style="color: #000000"> </span><span style="color: #001080">npm</span><span style="color: #000000"> </span><span style="color: #001080">run</span><span style="color: #000000"> </span><span style="color: #001080">build</span>
+<span style="color: #001080">$</span><span style="color: #000000"> </span><span style="color: #001080">npm</span><span style="color: #000000"> </span><span style="color: #001080">run</span><span style="color: #000000"> build:</span><span style="color: #001080">watch</span>
+<span style="color: #001080">$</span><span style="color: #000000"> </span><span style="color: #001080">npm</span><span style="color: #000000"> </span><span style="color: #001080">run</span><span style="color: #000000"> build:</span><span style="color: #001080">analyze</span>
+</code></pre>
+				<p>ビルドが走ります．<code>build:watch</code>の場合，変更されるたびにビルドが走ります．<code>build:analyze</code>の場合，バンドルの大きさの可視化ができます．</p>
+				<pre><code><span style="color: #001080">$</span><span style="color: #000000"> </span><span style="color: #001080">npm</span><span style="color: #000000"> </span><span style="color: #001080">run</span><span style="color: #000000"> test:</span><span style="color: #001080">watch</span>
+</code></pre>
+				<p>コンソールでテスト結果が表示されます．コードの変更が保存されるたびに必要なテストが再実行されるため，実装が既存の有効なテストを壊してないか簡単に確認できます．</p>
+				<pre><code><span style="color: #001080">$</span><span style="color: #000000"> </span><span style="color: #001080">npm</span><span style="color: #000000"> </span><span style="color: #001080">run</span><span style="color: #000000"> </span><span style="color: #001080">test</span>
+</code></pre>
+				<p>全てのテストが走るとともにカバレッジレポートが表示されます．<code>coverage/lcov-report/index.html</code>では，行ごとのカバレッジを確認できます．追加されたコードのブランチカバレッジが100%になるようにしてください．push時にチェックされ満たしていなければ却下されるはずです．</p>
+				<pre><code><span style="color: #001080">$</span><span style="color: #000000"> </span><span style="color: #001080">npm</span><span style="color: #000000"> </span><span style="color: #001080">run</span><span style="color: #000000"> </span><span style="color: #001080">lint</span>
+</code></pre>
+				<p>コードの品質が検査されます．エラーがあればそれに従い直してください．push前にもチェックされます．</p>
+				<pre><code><span style="color: #001080">$</span><span style="color: #000000"> </span><span style="color: #001080">npm</span><span style="color: #000000"> </span><span style="color: #001080">run</span><span style="color: #000000"> lint:</span><span style="color: #001080">fix</span>
+</code></pre>
+				<p>自動的に修正可能な問題(インデント等)を直してくれます．</p>
+				<a href="#todo" id="todo" style="color: inherit; text-decoration: none;">
+					<h2>TODO</h2>
+				</a>
+				<p><a href="https://github.com/na2hiro/json-kifu-format/issues">issues</a>参照．
+				読み込みエラーとなる棋譜があったら教えて下さい．</p>
+				<a href="#reference" id="reference" style="color: inherit; text-decoration: none;">
+					<h2>reference</h2>
+				</a>
+				<ul>
+					<li><a href="http://www.computer-shogi.org/protocol/record_v22.html">CSA標準棋譜ファイル形式</a></li>
+					<li><a href="https://code.google.com/p/shogi-format/">shogi-format</a>: こちらは昔自ら提案したもの．大風呂敷だったため挫折しました．今回はより小さく洗練された形式を目指しており，また実装を用意し実用第一で進めていきます．</li>
+					<li><a href="http://www.shogi.or.jp/faq/kihuhyouki.html">棋譜の表記方法</a>: 相対情報の書き方</li>
+					<li><a href="http://wiki.optus.nu/shogi/index.php?post=%B4%FD%C9%E8%A4%CE%B7%C1%BC%B0%A4%CB%A4%C4%A4%A4%A4%C6">棋譜の形式について - 将棋の棋譜でーたべーす</a>: 出回っている棋譜形式のまとめ</li>
+				</ul>
+				<a href="#license" id="license" style="color: inherit; text-decoration: none;">
+					<h2>license</h2>
+				</a>
+				<p>MIT License (see LICENSE.txt)</p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="modules.html">Exports</a>
+					</li>
+					<li class=" tsd-kind-namespace">
+						<a href="modules/formats.html">Formats</a>
+					</li>
+					<li class=" tsd-kind-namespace">
+						<a href="modules/normalizer.html">Normalizer</a>
+					</li>
+					<li class=" tsd-kind-namespace">
+						<a href="modules/parsers.html">Parsers</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-class">
+						<a href="classes/jkfplayer.html" class="tsd-kind-icon">JKFPlayer</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
