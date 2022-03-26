@@ -100,7 +100,7 @@
 <a href="#jsonの形式-version-10" id="jsonの形式-version-10" style="color: inherit; text-decoration: none;">
   <h3>JSONの形式 (Version 1.0)</h3>
 </a>
-<p><code>Formats.ts</code>にある内容です．&quot;?&quot;はない場合があるという意味です．小文字で始まる<code>型名</code>は組み込み型です．</p>
+<p><a href="./src/Formats.ts">./src/Formats.ts</a>にある内容です．&quot;?&quot;はない場合があるという意味です．小文字で始まる<code>型名</code>は組み込み型です．</p>
 <ul>
 <li>JKFが持つフィールドの定義<ul>
 <li>header <code>string=&gt;string</code> ヘッダ情報．キーはKI2，KIF等の日本語のものに準ずる．(例: &quot;場所&quot;, &quot;先手&quot;)</li>
@@ -197,13 +197,13 @@
 <a href="#json-schemaによる定義" id="json-schemaによる定義" style="color: inherit; text-decoration: none;">
   <h3>JSON Schemaによる定義</h3>
 </a>
-<p><a href="https://json-schema.org/">JSON Schema</a> のバージョン 2020-12 による定義が <code>specification/json-kifu-format.schema.json</code> にあります。
-また、 <code>npm run schema:compile</code> によりこのJSON Schemaファイル自体の検証を、 <code>npm run schema:validate</code> により <code>test/files/jkf/*.jkf</code> のJSON Schemaファイルに対する検証を行います。</p>
+<p><a href="https://json-schema.org/">JSON Schema</a> のバージョン 2020-12 による定義が <a href="./specification/json-kifu-format.schema.json">./specification/json-kifu-format.schema.json</a> にあります。
+また、 <code>npm run schema:compile</code> によりこのJSON Schemaファイル自体の検証を、 <code>npm run schema:validate</code> により <a href="./test/files/jkf/*.jkf">./test/files/jkf/*.jkf</a> のJSON Schemaファイルに対する検証を行います。</p>
 
 <a href="#jkfの例" id="jkfの例" style="color: inherit; text-decoration: none;">
   <h2>JKFの例</h2>
 </a>
-<p><code>test/</code>以下にも例が載っています．</p>
+<p><a href="./test/">.test/</a> 以下にも例が載っています．</p>
 
 <a href="#通常" id="通常" style="color: inherit; text-decoration: none;">
   <h3>通常</h3>
@@ -264,11 +264,10 @@
 <ul>
 <li><a href="https://github.com/na2hiro/Shogi.js">na2hiro/Shogi.js</a>: 将棋の盤駒を扱うライブラリ</li>
 <li><a href="http://pegjs.majda.cz/">PEG.js</a>: パーサジェネレータ</li>
-<li>TypeScript</li>
-<li>Webpack (バンドルツール)</li>
-<li>Jest (テストフレームワーク，カバレッジ計測)</li>
-<li>TSLint (Linter)</li>
-<li>iconv-lite, jschardet (文字コード関連)</li>
+<li><a href="https://www.typescriptlang.org/">TypeScript</a></li>
+<li><a href="https://webpack.js.org/">Webpack</a></li>
+<li><a href="https://jestjs.io/">Jest</a></li>
+<li><a href="https://palantir.github.io/tslint/">TSLint</a></li>
 </ul>
 
 <a href="#コマンド" id="コマンド" style="color: inherit; text-decoration: none;">
@@ -309,7 +308,7 @@
 <a href="#ライセンス" id="ライセンス" style="color: inherit; text-decoration: none;">
   <h2>ライセンス</h2>
 </a>
-<p>MIT License (see <a href="./LICENSE.txt">LICENSE.txt</a>)</p>
+<p>MIT License (see <a href="./LICENSE.txt">./LICENSE.txt</a>)</p>
 
 <a href="#workflows-it39s-for-me" id="workflows-it39s-for-me" style="color: inherit; text-decoration: none;">
   <h2>Workflows (it&#39;s for me)</h2>
