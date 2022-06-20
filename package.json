@@ -58,7 +58,7 @@
     "webpack": "^5.65.0",
     "webpack-bundle-analyzer": "^3.6.0",
     "webpack-cli": "^4.9.1",
-    "webpack-merge": "^4.2.2"
+    "webpack-merge": "^5.8.0"
   },
   "dependencies": {
     "shogi.js": "^2.0.5"
