@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const package = require('./package.json');
 
@@ -40,7 +40,7 @@ module.exports = env => {
             path: BUNDLE_DIR
         },
         plugins: [
-            new CleanWebpackPlugin([BUNDLE_DIR])
+            new CleanWebpackPlugin()
         ],
         optimization: {
             minimize: true
@@ -59,7 +59,7 @@ module.exports = env => {
             path: DIST_DIR
         },
         plugins: [
-            new CleanWebpackPlugin([DIST_DIR])
+            new CleanWebpackPlugin()
         ]
     });
     return [bundle, dist];
